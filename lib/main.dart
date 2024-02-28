@@ -21,8 +21,20 @@ void main() async {
   // }
 
   Uint8List bytes;
-  final externalStoragePath = "/"; // await getExternalStoragePath();
-  // print('externalStoragePath: $externalStoragePath');
+  const externalStoragePath = "/media/data"; // await getExternalStoragePath();
+  print('externalStoragePath: $externalStoragePath');
+  final file = File('$externalStoragePath/quiz_data.xlsx');
+
+  if (!file.existsSync()) {
+    print("fall back to assets");
+    final data = await rootBundle.load('assets/xls/quiz_data.xlsx');
+    bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+    //await file.writeAsBytes(bytes);
+  } else {
+    ByteData data =
+        await file.readAsBytes().then((bytes) => bytes.buffer.asByteData());
+    bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+  }
 
   // if (kDebugMode) {
   //   ByteData data = await rootBundle.load('assets/xls/quiz_data.xlsx');
@@ -42,8 +54,8 @@ void main() async {
   //   bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
   // }
 
-  ByteData data = await rootBundle.load('assets/xls/quiz_data.xlsx');
-  bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+  // ByteData data = await rootBundle.load('assets/xls/quiz_data.xlsx');
+  // bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
 
   final quizSettings = QuizSettings.fromExcel(bytes);
 
