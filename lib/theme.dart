@@ -67,12 +67,17 @@ final enterTheme = baseTheme.copyWith(
     background: Colors.black,
   ),
   textTheme: enterTextTheme,
-  pageTransitionsTheme: PageTransitionsTheme(
+  pageTransitionsTheme: const PageTransitionsTheme(
     builders: {
       TargetPlatform.android: FadeThroughPageTransitionsBuilder(
         fillColor: Colors.transparent,
       ),
-      TargetPlatform.iOS: ZoomPageTransitionsBuilder(),
+      TargetPlatform.macOS: FadeThroughPageTransitionsBuilder(
+        fillColor: Colors.transparent,
+      ),
+      TargetPlatform.linux: FadeThroughPageTransitionsBuilder(
+        fillColor: Colors.transparent,
+      ),
     },
   ),
 );

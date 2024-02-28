@@ -16,31 +16,34 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  if (Platform.isAndroid) {
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
-  }
+  // if (Platform.isAndroid) {
+  //   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
+  // }
 
   Uint8List bytes;
-  final externalStoragePath = await getExternalStoragePath();
-  print('externalStoragePath: $externalStoragePath');
+  final externalStoragePath = "/"; // await getExternalStoragePath();
+  // print('externalStoragePath: $externalStoragePath');
 
-  if (kDebugMode) {
-    ByteData data = await rootBundle.load('assets/xls/quiz_data.xlsx');
-    bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
-  } else {
-    final file = File('$externalStoragePath/quiz_data.xlsx');
+  // if (kDebugMode) {
+  //   ByteData data = await rootBundle.load('assets/xls/quiz_data.xlsx');
+  //   bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+  // } else {
+  //   final file = File('$externalStoragePath/quiz_data.xlsx');
 
-    if (!file.existsSync()) {
-      final data = await rootBundle.load('assets/xls/quiz_data.xlsx');
-      final bytes =
-          data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
-      await file.writeAsBytes(bytes);
-    }
+  //   if (!file.existsSync()) {
+  //     final data = await rootBundle.load('assets/xls/quiz_data.xlsx');
+  //     final bytes =
+  //         data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+  //     await file.writeAsBytes(bytes);
+  //   }
 
-    ByteData data =
-        await file.readAsBytes().then((bytes) => bytes.buffer.asByteData());
-    bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
-  }
+  //   ByteData data =
+  //       await file.readAsBytes().then((bytes) => bytes.buffer.asByteData());
+  //   bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+  // }
+
+  ByteData data = await rootBundle.load('assets/xls/quiz_data.xlsx');
+  bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
 
   final quizSettings = QuizSettings.fromExcel(bytes);
 
@@ -60,25 +63,31 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(
-      designSize: const Size(1920, 1080),
-      minTextAdapt: true,
-      builder: (_, child) => MaterialApp(
-          title: 'AI Quiz',
-          debugShowCheckedModeBanner: false,
-          theme: enterTheme,
-          home: const HomeScreen(),
-          builder: (context, child) {
-            return Scaffold(
-              backgroundColor: Colors.black,
-              body: Stack(
-                children: [
-                  const QuizBackground(),
-                  child!,
-                ],
-              ),
-            );
-          }),
+    return FittedBox(
+      child: SizedBox(
+        width: 1920,
+        height: 1080,
+        child: ScreenUtilInit(
+          designSize: const Size(1920, 1080),
+          minTextAdapt: true,
+          builder: (_, child) => MaterialApp(
+              title: 'AI Quiz',
+              debugShowCheckedModeBanner: false,
+              theme: enterTheme,
+              home: const HomeScreen(),
+              builder: (context, child) {
+                return Scaffold(
+                  backgroundColor: Colors.black,
+                  body: Stack(
+                    children: [
+                      const QuizBackground(),
+                      child!,
+                    ],
+                  ),
+                );
+              }),
+        ),
+      ),
     );
   }
 }
