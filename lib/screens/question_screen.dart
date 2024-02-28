@@ -4,6 +4,7 @@ import 'package:enter_quiz/components/question_box.dart';
 import 'package:enter_quiz/components/quiz_background.dart';
 import 'package:enter_quiz/providers/quiz_provider.dart';
 import 'package:enter_quiz/providers/strings_provider.dart';
+import 'package:enter_quiz/screens/home_screen.dart';
 import 'package:enter_quiz/screens/question_help_screen.dart';
 import 'package:enter_quiz/screens/win_screen.dart';
 import 'package:enter_quiz/theme.dart';
@@ -61,7 +62,13 @@ class QuestionScreen extends HookConsumerWidget {
             }));
           } else {
             // Go Home
-            Navigator.popUntil(context, (route) => route.isFirst);
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) {
+                return const HomeScreen();
+              }),
+              (route) => false,
+            );
           }
         });
       });

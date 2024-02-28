@@ -4,6 +4,7 @@ import 'package:enter_quiz/components/question_box.dart';
 import 'package:enter_quiz/components/quiz_background.dart';
 import 'package:enter_quiz/providers/language_provider.dart';
 import 'package:enter_quiz/providers/quiz_settings_provider.dart';
+import 'package:enter_quiz/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -20,7 +21,13 @@ class WinScreen extends HookConsumerWidget {
     useEffect(() {
       final timer = Timer(const Duration(seconds: 5), () {
         ref.invalidate(languageProvider);
-        Navigator.popUntil(context, (route) => route.isFirst);
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) {
+            return const HomeScreen();
+          }),
+          (route) => false,
+        );
       });
       return timer.cancel;
     }, const []);
